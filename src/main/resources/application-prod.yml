@@ -1,0 +1,2 @@
+backoffice:
+  url: local:4200/#/auth/login/check

@@ -1,0 +1,5 @@
+server:
+  port: 4000
+
+backoffice:
+  url: local:4200/#/auth/login/check

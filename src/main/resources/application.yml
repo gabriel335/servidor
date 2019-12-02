@@ -1,0 +1,16 @@
+server:
+    port: 4000
+
+logging:
+    level:
+          or:
+            springframework:
+                            ws: TRACE
+
+spring:
+  batch:
+    job:
+      enabled: false
+
+backoffice:
+  url: local:4200/#/auth/login/check
