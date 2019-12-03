@@ -1,6 +1,8 @@
 package ar.incluit.fintech.anses.servidor.web.soap;
 
 import ar.incluit.fintech.anses.servidor.service.SOAPConector;
+import ar.incluit.fintech.anses.servidor.web.servidor.SendUUIDRequest;
+import ar.incluit.fintech.anses.servidor.web.servidor.SendUUIDResponse;
 import com.entrevistas.wsdl.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,8 +10,6 @@ import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
-
-import javax.naming.NamingException;
 
 @Endpoint
 public class SoapEndpoint {
@@ -19,6 +19,8 @@ public class SoapEndpoint {
     private static final String NAMESPACE_URI = "entrevistasEndpoint";
 
     private final SOAPConector soapConector;
+
+    private Session session;
 
     public SoapEndpoint(SOAPConector soapConector) {
         this.soapConector = soapConector;
@@ -226,15 +228,23 @@ public class SoapEndpoint {
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "fileImportRequest")
     @ResponsePayload
-    public FileImportResponse fileImport(@RequestPayload FileImportRequest request) throws NamingException {
+    public FileImportResponse fileImport(@RequestPayload FileImportRequest request) {
         FileImportResponse response = soapConector.fileImport(request);
         return response;
     }
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "exportDataRequest")
     @ResponsePayload
-    public ExportDataResponse exportData(@RequestPayload ExportDataRequest request) throws NamingException {
+    public ExportDataResponse exportData(@RequestPayload ExportDataRequest request) {
         ExportDataResponse response = soapConector.exportData(request);
+        return response;
+    }
+
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "sendUUIDRequest")
+    @ResponsePayload
+    public SendUUIDResponse sendUUID(@RequestPayload SendUUIDRequest request) {
+        SendUUIDResponse response = new SendUUIDResponse();
+        session.setUuid(request.getUuid());
         return response;
     }
 

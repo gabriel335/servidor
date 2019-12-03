@@ -1,5 +1,6 @@
 package ar.incluit.fintech.anses.servidor.service;
 
+import ar.incluit.fintech.anses.servidor.web.soap.Session;
 import com.entrevistas.wsdl.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,17 +9,9 @@ import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.client.core.WebServiceMessageCallback;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 import org.springframework.ws.soap.SoapHeader;
-import org.springframework.ws.soap.SoapMessage;
-import org.springframework.ws.soap.client.core.SoapActionCallback;
 import org.springframework.ws.soap.saaj.SaajSoapMessage;
-import org.springframework.ws.transport.context.TransportContext;
-import org.springframework.ws.transport.context.TransportContextHolder;
-import org.springframework.ws.transport.http.HttpUrlConnection;
 import org.springframework.xml.transform.StringSource;
-import sun.rmi.runtime.Log;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -29,11 +22,19 @@ public class SOAPConector extends WebServiceGatewaySupport {
 
     private static final Logger log = LoggerFactory.getLogger(SOAPConector.class);
 
+    private Session session;
 
     @Value("${ws.url}")
     private String WSURL = "http://localhost:9090/ws/entrevistas.wsdl";
 
     private String namespaceDirectorURL = "xmlns=http://director.anses.gov.ar";
+
+    public SOAPConector(Session session) {
+        this.namespaceDirectorURL = namespaceDirectorURL;
+        this.session = session;
+    }
+
+    public SOAPConector() { }
 
 
     // ROLES ENDPOINT
@@ -41,7 +42,7 @@ public class SOAPConector extends WebServiceGatewaySupport {
         GetRolesRequest request = new GetRolesRequest();
 
         GetRolesResponse response = (GetRolesResponse) getWebServiceTemplate().marshalSendAndReceive(
-                "http://localhost:9090/ws/entrevistas.wsdl", request, new WebServiceMessageCallback() {
+                WSURL, request, new WebServiceMessageCallback() {
 
                     @Override
                     public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
@@ -49,14 +50,13 @@ public class SOAPConector extends WebServiceGatewaySupport {
                             try {
                                 SaajSoapMessage soapMessage = (SaajSoapMessage) message;
                                 SoapHeader soapHeader = soapMessage.getSoapHeader();
-                                StringSource headerSource = new StringSource("<token></token>\n<sign>test213</sign>");
+                                StringSource headerSource = new StringSource("<token " + namespaceDirectorURL + ">" + session.getToken() + "</token>\n<sign " + namespaceDirectorURL + ">" + session.getSign() + "</sign>");
                                 Transformer transformer = TransformerFactory.newInstance().newTransformer();
                                 transformer.transform(headerSource, soapHeader.getResult());
                             } catch (TransformerFactoryConfigurationError | TransformerException e) {
                                 logger.error(e.getMessage(), e);
                             }
                         }
-                        log.info("log", message);
                     }
                 });
 
@@ -67,7 +67,23 @@ public class SOAPConector extends WebServiceGatewaySupport {
     public AddSetResponse addSet(AddSetRequest addSetRequest) {
 
         AddSetResponse response = (AddSetResponse) getWebServiceTemplate().marshalSendAndReceive(
-                addSetRequest, new SoapActionCallback(WSURL));
+                WSURL, addSetRequest, new WebServiceMessageCallback() {
+
+                    @Override
+                    public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
+                        if (message instanceof SaajSoapMessage) {
+                            try {
+                                SaajSoapMessage soapMessage = (SaajSoapMessage) message;
+                                SoapHeader soapHeader = soapMessage.getSoapHeader();
+                                StringSource headerSource = new StringSource("<token " + namespaceDirectorURL + ">" + session.getToken() + "</token>\n<sign " + namespaceDirectorURL + ">" + session.getSign() + "</sign>");
+                                Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                                transformer.transform(headerSource, soapHeader.getResult());
+                            } catch (TransformerFactoryConfigurationError | TransformerException e) {
+                                logger.error(e.getMessage(), e);
+                            }
+                        }
+                    }
+                });
 
         return response;
     }
@@ -76,7 +92,23 @@ public class SOAPConector extends WebServiceGatewaySupport {
         GetAllSetRequest request = new GetAllSetRequest();
 
         GetAllSetResponse response = (GetAllSetResponse) getWebServiceTemplate().marshalSendAndReceive(
-                request, new SoapActionCallback(WSURL));
+                WSURL, request, new WebServiceMessageCallback() {
+
+                    @Override
+                    public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
+                        if (message instanceof SaajSoapMessage) {
+                            try {
+                                SaajSoapMessage soapMessage = (SaajSoapMessage) message;
+                                SoapHeader soapHeader = soapMessage.getSoapHeader();
+                                StringSource headerSource = new StringSource("<token " + namespaceDirectorURL + ">" + session.getToken() + "</token>\n<sign " + namespaceDirectorURL + ">" + session.getSign() + "</sign>");
+                                Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                                transformer.transform(headerSource, soapHeader.getResult());
+                            } catch (TransformerFactoryConfigurationError | TransformerException e) {
+                                logger.error(e.getMessage(), e);
+                            }
+                        }
+                    }
+                });
 
         return response;
     }
@@ -84,7 +116,23 @@ public class SOAPConector extends WebServiceGatewaySupport {
     public DeleteSetResponse deleteSet(DeleteSetRequest deleteSetRequest) {
 
         DeleteSetResponse response = (DeleteSetResponse) getWebServiceTemplate().marshalSendAndReceive(
-                deleteSetRequest, new SoapActionCallback(WSURL));
+                WSURL, deleteSetRequest, new WebServiceMessageCallback() {
+
+                    @Override
+                    public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
+                        if (message instanceof SaajSoapMessage) {
+                            try {
+                                SaajSoapMessage soapMessage = (SaajSoapMessage) message;
+                                SoapHeader soapHeader = soapMessage.getSoapHeader();
+                                StringSource headerSource = new StringSource("<token " + namespaceDirectorURL + ">" + session.getToken() + "</token>\n<sign " + namespaceDirectorURL + ">" + session.getSign() + "</sign>");
+                                Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                                transformer.transform(headerSource, soapHeader.getResult());
+                            } catch (TransformerFactoryConfigurationError | TransformerException e) {
+                                logger.error(e.getMessage(), e);
+                            }
+                        }
+                    }
+                });
 
         return response;
     }
@@ -93,7 +141,23 @@ public class SOAPConector extends WebServiceGatewaySupport {
     public AddQTyResponse addQTy(AddQTyRequest addQTyRequest) {
 
         AddQTyResponse response = (AddQTyResponse) getWebServiceTemplate().marshalSendAndReceive(
-                addQTyRequest, new SoapActionCallback(WSURL));
+                WSURL, addQTyRequest, new WebServiceMessageCallback() {
+
+                    @Override
+                    public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
+                        if (message instanceof SaajSoapMessage) {
+                            try {
+                                SaajSoapMessage soapMessage = (SaajSoapMessage) message;
+                                SoapHeader soapHeader = soapMessage.getSoapHeader();
+                                StringSource headerSource = new StringSource("<token " + namespaceDirectorURL + ">" + session.getToken() + "</token>\n<sign " + namespaceDirectorURL + ">" + session.getSign() + "</sign>");
+                                Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                                transformer.transform(headerSource, soapHeader.getResult());
+                            } catch (TransformerFactoryConfigurationError | TransformerException e) {
+                                logger.error(e.getMessage(), e);
+                            }
+                        }
+                    }
+                });
 
         return response;
     }
@@ -102,7 +166,23 @@ public class SOAPConector extends WebServiceGatewaySupport {
         GetAllQTyRequest request = new GetAllQTyRequest();
 
         GetAllQTyResponse response = (GetAllQTyResponse) getWebServiceTemplate().marshalSendAndReceive(
-                request, new SoapActionCallback(WSURL));
+                WSURL, request, new WebServiceMessageCallback() {
+
+                    @Override
+                    public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
+                        if (message instanceof SaajSoapMessage) {
+                            try {
+                                SaajSoapMessage soapMessage = (SaajSoapMessage) message;
+                                SoapHeader soapHeader = soapMessage.getSoapHeader();
+                                StringSource headerSource = new StringSource("<token " + namespaceDirectorURL + ">" + session.getToken() + "</token>\n<sign " + namespaceDirectorURL + ">" + session.getSign() + "</sign>");
+                                Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                                transformer.transform(headerSource, soapHeader.getResult());
+                            } catch (TransformerFactoryConfigurationError | TransformerException e) {
+                                logger.error(e.getMessage(), e);
+                            }
+                        }
+                    }
+                });
 
         return response;
     }
@@ -111,7 +191,23 @@ public class SOAPConector extends WebServiceGatewaySupport {
     public UpdateFormResponse updateForm(UpdateFormRequest updateFormRequest) {
 
         UpdateFormResponse response = (UpdateFormResponse) getWebServiceTemplate().marshalSendAndReceive(
-                updateFormRequest, new SoapActionCallback(WSURL));
+                WSURL, updateFormRequest, new WebServiceMessageCallback() {
+
+                    @Override
+                    public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
+                        if (message instanceof SaajSoapMessage) {
+                            try {
+                                SaajSoapMessage soapMessage = (SaajSoapMessage) message;
+                                SoapHeader soapHeader = soapMessage.getSoapHeader();
+                                StringSource headerSource = new StringSource("<token " + namespaceDirectorURL + ">" + session.getToken() + "</token>\n<sign " + namespaceDirectorURL + ">" + session.getSign() + "</sign>");
+                                Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                                transformer.transform(headerSource, soapHeader.getResult());
+                            } catch (TransformerFactoryConfigurationError | TransformerException e) {
+                                logger.error(e.getMessage(), e);
+                            }
+                        }
+                    }
+                });
         return response;
     }
 
@@ -119,7 +215,23 @@ public class SOAPConector extends WebServiceGatewaySupport {
     public AddQuestionResponse addQuestion(AddQuestionRequest addQuestionRequest) {
 
         AddQuestionResponse response = (AddQuestionResponse) getWebServiceTemplate().marshalSendAndReceive(
-                addQuestionRequest, new SoapActionCallback(WSURL));
+                WSURL, addQuestionRequest, new WebServiceMessageCallback() {
+
+                    @Override
+                    public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
+                        if (message instanceof SaajSoapMessage) {
+                            try {
+                                SaajSoapMessage soapMessage = (SaajSoapMessage) message;
+                                SoapHeader soapHeader = soapMessage.getSoapHeader();
+                                StringSource headerSource = new StringSource("<token " + namespaceDirectorURL + ">" + session.getToken() + "</token>\n<sign " + namespaceDirectorURL + ">" + session.getSign() + "</sign>");
+                                Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                                transformer.transform(headerSource, soapHeader.getResult());
+                            } catch (TransformerFactoryConfigurationError | TransformerException e) {
+                                logger.error(e.getMessage(), e);
+                            }
+                        }
+                    }
+                });
 
         return response;
     }
@@ -127,7 +239,23 @@ public class SOAPConector extends WebServiceGatewaySupport {
     public UpdateQuestionResponse updateQuestion(UpdateQuestionRequest updateQuestionRequest) {
 
         UpdateQuestionResponse response = (UpdateQuestionResponse) getWebServiceTemplate().marshalSendAndReceive(
-                updateQuestionRequest, new SoapActionCallback(WSURL));
+                WSURL, updateQuestionRequest, new WebServiceMessageCallback() {
+
+                    @Override
+                    public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
+                        if (message instanceof SaajSoapMessage) {
+                            try {
+                                SaajSoapMessage soapMessage = (SaajSoapMessage) message;
+                                SoapHeader soapHeader = soapMessage.getSoapHeader();
+                                StringSource headerSource = new StringSource("<token " + namespaceDirectorURL + ">" + session.getToken() + "</token>\n<sign " + namespaceDirectorURL + ">" + session.getSign() + "</sign>");
+                                Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                                transformer.transform(headerSource, soapHeader.getResult());
+                            } catch (TransformerFactoryConfigurationError | TransformerException e) {
+                                logger.error(e.getMessage(), e);
+                            }
+                        }
+                    }
+                });
 
         return response;
     }
@@ -136,7 +264,23 @@ public class SOAPConector extends WebServiceGatewaySupport {
         GetAllQuestionRequest request = new GetAllQuestionRequest();
 
         GetAllQuestionResponse response = (GetAllQuestionResponse) getWebServiceTemplate().marshalSendAndReceive(
-                request, new SoapActionCallback(WSURL));
+                WSURL, request, new WebServiceMessageCallback() {
+
+                    @Override
+                    public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
+                        if (message instanceof SaajSoapMessage) {
+                            try {
+                                SaajSoapMessage soapMessage = (SaajSoapMessage) message;
+                                SoapHeader soapHeader = soapMessage.getSoapHeader();
+                                StringSource headerSource = new StringSource("<token " + namespaceDirectorURL + ">" + session.getToken() + "</token>\n<sign " + namespaceDirectorURL + ">" + session.getSign() + "</sign>");
+                                Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                                transformer.transform(headerSource, soapHeader.getResult());
+                            } catch (TransformerFactoryConfigurationError | TransformerException e) {
+                                logger.error(e.getMessage(), e);
+                            }
+                        }
+                    }
+                });
 
         return response;
     }
@@ -144,7 +288,23 @@ public class SOAPConector extends WebServiceGatewaySupport {
     public GetQuestionResponse getQuestion(GetQuestionRequest getQuestionRequest) {
 
         GetQuestionResponse response = (GetQuestionResponse) getWebServiceTemplate().marshalSendAndReceive(
-                getQuestionRequest, new SoapActionCallback(WSURL));
+                WSURL, getQuestionRequest, new WebServiceMessageCallback() {
+
+                    @Override
+                    public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
+                        if (message instanceof SaajSoapMessage) {
+                            try {
+                                SaajSoapMessage soapMessage = (SaajSoapMessage) message;
+                                SoapHeader soapHeader = soapMessage.getSoapHeader();
+                                StringSource headerSource = new StringSource("<token " + namespaceDirectorURL + ">" + session.getToken() + "</token>\n<sign " + namespaceDirectorURL + ">" + session.getSign() + "</sign>");
+                                Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                                transformer.transform(headerSource, soapHeader.getResult());
+                            } catch (TransformerFactoryConfigurationError | TransformerException e) {
+                                logger.error(e.getMessage(), e);
+                            }
+                        }
+                    }
+                });
 
         return response;
     }
@@ -153,7 +313,23 @@ public class SOAPConector extends WebServiceGatewaySupport {
         GetLastIdRequest request = new GetLastIdRequest();
 
         GetLastIdResponse response = (GetLastIdResponse) getWebServiceTemplate().marshalSendAndReceive(
-                request, new SoapActionCallback(WSURL));
+                WSURL, request, new WebServiceMessageCallback() {
+
+                    @Override
+                    public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
+                        if (message instanceof SaajSoapMessage) {
+                            try {
+                                SaajSoapMessage soapMessage = (SaajSoapMessage) message;
+                                SoapHeader soapHeader = soapMessage.getSoapHeader();
+                                StringSource headerSource = new StringSource("<token " + namespaceDirectorURL + ">" + session.getToken() + "</token>\n<sign " + namespaceDirectorURL + ">" + session.getSign() + "</sign>");
+                                Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                                transformer.transform(headerSource, soapHeader.getResult());
+                            } catch (TransformerFactoryConfigurationError | TransformerException e) {
+                                logger.error(e.getMessage(), e);
+                            }
+                        }
+                    }
+                });
 
         return response;
     }
@@ -161,7 +337,23 @@ public class SOAPConector extends WebServiceGatewaySupport {
     public DeleteQuestionResponse deleteQuestion(DeleteQuestionRequest deleteQuestionRequest) {
 
         DeleteQuestionResponse response = (DeleteQuestionResponse) getWebServiceTemplate().marshalSendAndReceive(
-                deleteQuestionRequest, new SoapActionCallback(WSURL));
+                WSURL, deleteQuestionRequest, new WebServiceMessageCallback() {
+
+                    @Override
+                    public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
+                        if (message instanceof SaajSoapMessage) {
+                            try {
+                                SaajSoapMessage soapMessage = (SaajSoapMessage) message;
+                                SoapHeader soapHeader = soapMessage.getSoapHeader();
+                                StringSource headerSource = new StringSource("<token " + namespaceDirectorURL + ">" + session.getToken() + "</token>\n<sign " + namespaceDirectorURL + ">" + session.getSign() + "</sign>");
+                                Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                                transformer.transform(headerSource, soapHeader.getResult());
+                            } catch (TransformerFactoryConfigurationError | TransformerException e) {
+                                logger.error(e.getMessage(), e);
+                            }
+                        }
+                    }
+                });
 
         return response;
     }
@@ -169,7 +361,23 @@ public class SOAPConector extends WebServiceGatewaySupport {
     public ChangeStatusResponse changeStatus(ChangeStatusRequest changeStatusRequest) {
 
         ChangeStatusResponse response = (ChangeStatusResponse) getWebServiceTemplate().marshalSendAndReceive(
-                changeStatusRequest, new SoapActionCallback(WSURL));
+                WSURL, changeStatusRequest, new WebServiceMessageCallback() {
+
+                    @Override
+                    public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
+                        if (message instanceof SaajSoapMessage) {
+                            try {
+                                SaajSoapMessage soapMessage = (SaajSoapMessage) message;
+                                SoapHeader soapHeader = soapMessage.getSoapHeader();
+                                StringSource headerSource = new StringSource("<token " + namespaceDirectorURL + ">" + session.getToken() + "</token>\n<sign " + namespaceDirectorURL + ">" + session.getSign() + "</sign>");
+                                Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                                transformer.transform(headerSource, soapHeader.getResult());
+                            } catch (TransformerFactoryConfigurationError | TransformerException e) {
+                                logger.error(e.getMessage(), e);
+                            }
+                        }
+                    }
+                });
 
         return response;
     }
@@ -177,8 +385,23 @@ public class SOAPConector extends WebServiceGatewaySupport {
     public FindQuestionBySetResponse findQuestionBySet(FindQuestionBySetRequest findQuestionBySetRequest) {
 
         FindQuestionBySetResponse response = (FindQuestionBySetResponse) getWebServiceTemplate().marshalSendAndReceive(
-                findQuestionBySetRequest, new SoapActionCallback(WSURL));
+                WSURL, findQuestionBySetRequest, new WebServiceMessageCallback() {
 
+                    @Override
+                    public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
+                        if (message instanceof SaajSoapMessage) {
+                            try {
+                                SaajSoapMessage soapMessage = (SaajSoapMessage) message;
+                                SoapHeader soapHeader = soapMessage.getSoapHeader();
+                                StringSource headerSource = new StringSource("<token " + namespaceDirectorURL + ">" + session.getToken() + "</token>\n<sign " + namespaceDirectorURL + ">" + session.getSign() + "</sign>");
+                                Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                                transformer.transform(headerSource, soapHeader.getResult());
+                            } catch (TransformerFactoryConfigurationError | TransformerException e) {
+                                logger.error(e.getMessage(), e);
+                            }
+                        }
+                    }
+                });
         return response;
     }
 
@@ -186,7 +409,23 @@ public class SOAPConector extends WebServiceGatewaySupport {
     public AddUserResponse addUser(AddUserRequest addUserRequest) {
 
         AddUserResponse response = (AddUserResponse) getWebServiceTemplate().marshalSendAndReceive(
-                addUserRequest, new SoapActionCallback(WSURL));
+                WSURL, addUserRequest, new WebServiceMessageCallback() {
+
+                    @Override
+                    public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
+                        if (message instanceof SaajSoapMessage) {
+                            try {
+                                SaajSoapMessage soapMessage = (SaajSoapMessage) message;
+                                SoapHeader soapHeader = soapMessage.getSoapHeader();
+                                StringSource headerSource = new StringSource("<token " + namespaceDirectorURL + ">" + session.getToken() + "</token>\n<sign " + namespaceDirectorURL + ">" + session.getSign() + "</sign>");
+                                Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                                transformer.transform(headerSource, soapHeader.getResult());
+                            } catch (TransformerFactoryConfigurationError | TransformerException e) {
+                                logger.error(e.getMessage(), e);
+                            }
+                        }
+                    }
+                });
 
         return response;
     }
@@ -194,7 +433,23 @@ public class SOAPConector extends WebServiceGatewaySupport {
     public UpdateUserResponse updateUser(UpdateUserRequest updateUserRequest) {
 
         UpdateUserResponse response = (UpdateUserResponse) getWebServiceTemplate().marshalSendAndReceive(
-                updateUserRequest, new SoapActionCallback(WSURL));
+                WSURL, updateUserRequest, new WebServiceMessageCallback() {
+
+                    @Override
+                    public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
+                        if (message instanceof SaajSoapMessage) {
+                            try {
+                                SaajSoapMessage soapMessage = (SaajSoapMessage) message;
+                                SoapHeader soapHeader = soapMessage.getSoapHeader();
+                                StringSource headerSource = new StringSource("<token " + namespaceDirectorURL + ">" + session.getToken() + "</token>\n<sign " + namespaceDirectorURL + ">" + session.getSign() + "</sign>");
+                                Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                                transformer.transform(headerSource, soapHeader.getResult());
+                            } catch (TransformerFactoryConfigurationError | TransformerException e) {
+                                logger.error(e.getMessage(), e);
+                            }
+                        }
+                    }
+                });
 
         return response;
     }
@@ -202,7 +457,23 @@ public class SOAPConector extends WebServiceGatewaySupport {
     public GetUserResponse getUser(GetUserRequest getUserRequest) {
 
         GetUserResponse response = (GetUserResponse) getWebServiceTemplate().marshalSendAndReceive(
-                getUserRequest, new SoapActionCallback(WSURL));
+                WSURL, getUserRequest, new WebServiceMessageCallback() {
+
+                    @Override
+                    public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
+                        if (message instanceof SaajSoapMessage) {
+                            try {
+                                SaajSoapMessage soapMessage = (SaajSoapMessage) message;
+                                SoapHeader soapHeader = soapMessage.getSoapHeader();
+                                StringSource headerSource = new StringSource("<token " + namespaceDirectorURL + ">" + session.getToken() + "</token>\n<sign " + namespaceDirectorURL + ">" + session.getSign() + "</sign>");
+                                Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                                transformer.transform(headerSource, soapHeader.getResult());
+                            } catch (TransformerFactoryConfigurationError | TransformerException e) {
+                                logger.error(e.getMessage(), e);
+                            }
+                        }
+                    }
+                });
 
         return response;
     }
@@ -211,7 +482,23 @@ public class SOAPConector extends WebServiceGatewaySupport {
         GetAllUsersRequest request = new GetAllUsersRequest();
 
         GetAllUsersResponse response = (GetAllUsersResponse) getWebServiceTemplate().marshalSendAndReceive(
-                request, new SoapActionCallback(WSURL));
+                WSURL, request, new WebServiceMessageCallback() {
+
+                    @Override
+                    public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
+                        if (message instanceof SaajSoapMessage) {
+                            try {
+                                SaajSoapMessage soapMessage = (SaajSoapMessage) message;
+                                SoapHeader soapHeader = soapMessage.getSoapHeader();
+                                StringSource headerSource = new StringSource("<token " + namespaceDirectorURL + ">" + session.getToken() + "</token>\n<sign " + namespaceDirectorURL + ">" + session.getSign() + "</sign>");
+                                Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                                transformer.transform(headerSource, soapHeader.getResult());
+                            } catch (TransformerFactoryConfigurationError | TransformerException e) {
+                                logger.error(e.getMessage(), e);
+                            }
+                        }
+                    }
+                });
 
         return response;
     }
@@ -219,7 +506,23 @@ public class SOAPConector extends WebServiceGatewaySupport {
     public DisabledUserResponse disabledUser(DisabledUserRequest disabledUserRequest) {
 
         DisabledUserResponse response = (DisabledUserResponse) getWebServiceTemplate().marshalSendAndReceive(
-                disabledUserRequest, new SoapActionCallback(WSURL));
+                WSURL, disabledUserRequest, new WebServiceMessageCallback() {
+
+                    @Override
+                    public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
+                        if (message instanceof SaajSoapMessage) {
+                            try {
+                                SaajSoapMessage soapMessage = (SaajSoapMessage) message;
+                                SoapHeader soapHeader = soapMessage.getSoapHeader();
+                                StringSource headerSource = new StringSource("<token " + namespaceDirectorURL + ">" + session.getToken() + "</token>\n<sign " + namespaceDirectorURL + ">" + session.getSign() + "</sign>");
+                                Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                                transformer.transform(headerSource, soapHeader.getResult());
+                            } catch (TransformerFactoryConfigurationError | TransformerException e) {
+                                logger.error(e.getMessage(), e);
+                            }
+                        }
+                    }
+                });
 
         return response;
     }
@@ -227,7 +530,23 @@ public class SOAPConector extends WebServiceGatewaySupport {
     public EnabledUserResponse enabledUser(EnabledUserRequest enabledUserRequest) {
 
         EnabledUserResponse response = (EnabledUserResponse) getWebServiceTemplate().marshalSendAndReceive(
-                enabledUserRequest, new SoapActionCallback(WSURL));
+                WSURL, enabledUserRequest, new WebServiceMessageCallback() {
+
+                    @Override
+                    public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
+                        if (message instanceof SaajSoapMessage) {
+                            try {
+                                SaajSoapMessage soapMessage = (SaajSoapMessage) message;
+                                SoapHeader soapHeader = soapMessage.getSoapHeader();
+                                StringSource headerSource = new StringSource("<token " + namespaceDirectorURL + ">" + session.getToken() + "</token>\n<sign " + namespaceDirectorURL + ">" + session.getSign() + "</sign>");
+                                Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                                transformer.transform(headerSource, soapHeader.getResult());
+                            } catch (TransformerFactoryConfigurationError | TransformerException e) {
+                                logger.error(e.getMessage(), e);
+                            }
+                        }
+                    }
+                });
 
         return response;
     }
@@ -235,7 +554,23 @@ public class SOAPConector extends WebServiceGatewaySupport {
     public GetUsersByTypeResponse getUsersByType(GetUsersByTypeRequest getUsersByTypeRequest) {
 
         GetUsersByTypeResponse response = (GetUsersByTypeResponse) getWebServiceTemplate().marshalSendAndReceive(
-                getUsersByTypeRequest, new SoapActionCallback(WSURL));
+                WSURL, getUsersByTypeRequest, new WebServiceMessageCallback() {
+
+                    @Override
+                    public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
+                        if (message instanceof SaajSoapMessage) {
+                            try {
+                                SaajSoapMessage soapMessage = (SaajSoapMessage) message;
+                                SoapHeader soapHeader = soapMessage.getSoapHeader();
+                                StringSource headerSource = new StringSource("<token " + namespaceDirectorURL + ">" + session.getToken() + "</token>\n<sign " + namespaceDirectorURL + ">" + session.getSign() + "</sign>");
+                                Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                                transformer.transform(headerSource, soapHeader.getResult());
+                            } catch (TransformerFactoryConfigurationError | TransformerException e) {
+                                logger.error(e.getMessage(), e);
+                            }
+                        }
+                    }
+                });
 
         return response;
     }
@@ -243,7 +578,23 @@ public class SOAPConector extends WebServiceGatewaySupport {
     public GetUserForUsernameResponse getUserForUsername(GetUserForUsernameRequest getUserForUsernameRequest) {
 
         GetUserForUsernameResponse response = (GetUserForUsernameResponse) getWebServiceTemplate().marshalSendAndReceive(
-                getUserForUsernameRequest, new SoapActionCallback(WSURL));
+                WSURL, getUserForUsernameRequest, new WebServiceMessageCallback() {
+
+                    @Override
+                    public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
+                        if (message instanceof SaajSoapMessage) {
+                            try {
+                                SaajSoapMessage soapMessage = (SaajSoapMessage) message;
+                                SoapHeader soapHeader = soapMessage.getSoapHeader();
+                                StringSource headerSource = new StringSource("<token " + namespaceDirectorURL + ">" + session.getToken() + "</token>\n<sign " + namespaceDirectorURL + ">" + session.getSign() + "</sign>");
+                                Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                                transformer.transform(headerSource, soapHeader.getResult());
+                            } catch (TransformerFactoryConfigurationError | TransformerException e) {
+                                logger.error(e.getMessage(), e);
+                            }
+                        }
+                    }
+                });
 
         return response;
     }
@@ -252,7 +603,23 @@ public class SOAPConector extends WebServiceGatewaySupport {
     public AuthenticateResponse authenticate(AuthenticateRequest authenticateRequest) {
 
         AuthenticateResponse response = (AuthenticateResponse) getWebServiceTemplate().marshalSendAndReceive(
-                authenticateRequest, new SoapActionCallback(WSURL));
+                WSURL, authenticateRequest, new WebServiceMessageCallback() {
+
+                    @Override
+                    public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
+                        if (message instanceof SaajSoapMessage) {
+                            try {
+                                SaajSoapMessage soapMessage = (SaajSoapMessage) message;
+                                SoapHeader soapHeader = soapMessage.getSoapHeader();
+                                StringSource headerSource = new StringSource("<token " + namespaceDirectorURL + ">" + session.getToken() + "</token>\n<sign " + namespaceDirectorURL + ">" + session.getSign() + "</sign>");
+                                Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                                transformer.transform(headerSource, soapHeader.getResult());
+                            } catch (TransformerFactoryConfigurationError | TransformerException e) {
+                                logger.error(e.getMessage(), e);
+                            }
+                        }
+                    }
+                });
 
         return response;
     }
@@ -260,7 +627,23 @@ public class SOAPConector extends WebServiceGatewaySupport {
     public AuthenticateResponseApp authorizeUserApp(AuthenticateRequestApp authenticateRequestApp) {
 
         AuthenticateResponseApp response = (AuthenticateResponseApp) getWebServiceTemplate().marshalSendAndReceive(
-                authenticateRequestApp, new SoapActionCallback(WSURL));
+                WSURL, authenticateRequestApp, new WebServiceMessageCallback() {
+
+                    @Override
+                    public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
+                        if (message instanceof SaajSoapMessage) {
+                            try {
+                                SaajSoapMessage soapMessage = (SaajSoapMessage) message;
+                                SoapHeader soapHeader = soapMessage.getSoapHeader();
+                                StringSource headerSource = new StringSource("<token " + namespaceDirectorURL + ">" + session.getToken() + "</token>\n<sign " + namespaceDirectorURL + ">" + session.getSign() + "</sign>");
+                                Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                                transformer.transform(headerSource, soapHeader.getResult());
+                            } catch (TransformerFactoryConfigurationError | TransformerException e) {
+                                logger.error(e.getMessage(), e);
+                            }
+                        }
+                    }
+                });
 
         return response;
     }
@@ -268,7 +651,23 @@ public class SOAPConector extends WebServiceGatewaySupport {
     public UpdateSignatureResponse updateSignature(UpdateSignatureRequest updateSignatureRequest) {
 
         UpdateSignatureResponse response = (UpdateSignatureResponse) getWebServiceTemplate().marshalSendAndReceive(
-                updateSignatureRequest, new SoapActionCallback(WSURL));
+                WSURL, updateSignatureRequest, new WebServiceMessageCallback() {
+
+                    @Override
+                    public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
+                        if (message instanceof SaajSoapMessage) {
+                            try {
+                                SaajSoapMessage soapMessage = (SaajSoapMessage) message;
+                                SoapHeader soapHeader = soapMessage.getSoapHeader();
+                                StringSource headerSource = new StringSource("<token " + namespaceDirectorURL + ">" + session.getToken() + "</token>\n<sign " + namespaceDirectorURL + ">" + session.getSign() + "</sign>");
+                                Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                                transformer.transform(headerSource, soapHeader.getResult());
+                            } catch (TransformerFactoryConfigurationError | TransformerException e) {
+                                logger.error(e.getMessage(), e);
+                            }
+                        }
+                    }
+                });
 
         return response;
     }
@@ -276,7 +675,23 @@ public class SOAPConector extends WebServiceGatewaySupport {
     public FileImportResponse fileImport(FileImportRequest fileImportRequest) {
 
         FileImportResponse response = (FileImportResponse) getWebServiceTemplate().marshalSendAndReceive(
-                fileImportRequest, new SoapActionCallback(WSURL));
+                WSURL, fileImportRequest, new WebServiceMessageCallback() {
+
+                    @Override
+                    public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
+                        if (message instanceof SaajSoapMessage) {
+                            try {
+                                SaajSoapMessage soapMessage = (SaajSoapMessage) message;
+                                SoapHeader soapHeader = soapMessage.getSoapHeader();
+                                StringSource headerSource = new StringSource("<token " + namespaceDirectorURL + ">" + session.getToken() + "</token>\n<sign " + namespaceDirectorURL + ">" + session.getSign() + "</sign>");
+                                Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                                transformer.transform(headerSource, soapHeader.getResult());
+                            } catch (TransformerFactoryConfigurationError | TransformerException e) {
+                                logger.error(e.getMessage(), e);
+                            }
+                        }
+                    }
+                });
 
         return response;
     }
@@ -284,7 +699,23 @@ public class SOAPConector extends WebServiceGatewaySupport {
     public ExportDataResponse exportData(ExportDataRequest exportDataRequest) {
 
         ExportDataResponse response = (ExportDataResponse) getWebServiceTemplate().marshalSendAndReceive(
-                exportDataRequest, new SoapActionCallback(WSURL));
+                WSURL, exportDataRequest, new WebServiceMessageCallback() {
+
+                    @Override
+                    public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
+                        if (message instanceof SaajSoapMessage) {
+                            try {
+                                SaajSoapMessage soapMessage = (SaajSoapMessage) message;
+                                SoapHeader soapHeader = soapMessage.getSoapHeader();
+                                StringSource headerSource = new StringSource("<token " + namespaceDirectorURL + ">" + session.getToken() + "</token>\n<sign " + namespaceDirectorURL + ">" + session.getSign() + "</sign>");
+                                Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                                transformer.transform(headerSource, soapHeader.getResult());
+                            } catch (TransformerFactoryConfigurationError | TransformerException e) {
+                                logger.error(e.getMessage(), e);
+                            }
+                        }
+                    }
+                });
 
         return response;
     }

@@ -8,6 +8,28 @@
 
     <!-- ACCOUNT -->
 
+    <xs:element name="sendUUIDRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name= "uuid" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- ACCOUNT -->
+
+    <xs:element name="sendUUIDResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name= "status" type="tns:serviceStatus"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+
+    <!-- ACCOUNT -->
+
     <xs:element name="authenticateRequest">
         <xs:complexType>
             <xs:sequence>

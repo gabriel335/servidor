@@ -2,17 +2,17 @@ package ar.incluit.fintech.anses.servidor.web.soap;
 
 public class Session {
 
-    private String ip;
+    private String uuid;
     private String token;
     private String sign;
 
 
-    public String getIp() {
-        return ip;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setIp(String ip) {
-        this.ip = ip;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getToken() {

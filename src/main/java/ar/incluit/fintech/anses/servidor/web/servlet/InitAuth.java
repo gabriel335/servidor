@@ -1,5 +1,6 @@
 package ar.incluit.fintech.anses.servidor.web.servlet;
 
+import ar.incluit.fintech.anses.servidor.web.soap.Session;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.servlet.ServletException;
@@ -14,9 +15,9 @@ import java.io.PrintWriter;
 public class InitAuth extends HttpServlet {
 
     @Value("${backoffice.url}")
-    private String BACKOFFICE_URL = "localhost:4200/#/auth/login/check";
+    private String BACKOFFICE_URL = "http://localhost:4200/#/auth/login/check";
 
-
+    private Session session = new Session();
 
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         String token = req.getParameter("token");
@@ -35,7 +36,11 @@ public class InitAuth extends HttpServlet {
                 .append("</head>")
                 .append("<body>");
         if (!(token == null && sign == null) && !token.trim().isEmpty() && !sign.trim().isEmpty()) {
-            writer.append("<a href='http://"+ BACKOFFICE_URL + "?token=" + token+ "&sign="+ sign +"' style='display: flex;flex-direction: column; justify-content: center; align-items: center;text-align: center;min-height: 100vh;font-size: 25px'>Ir a al back-office</a>");
+            //writer.append("<a id='gobtn' href='"+ BACKOFFICE_URL + "?token=" + token+ "&sign="+ sign +"' style='display: flex;flex-direction: column; justify-content: center; align-items: center;text-align: center;min-height: 100vh;font-size: 25px'>Ir a al back-office</a>");
+            session.setToken(token);
+            session.setSign(sign);
+            res.sendRedirect(String.format("%s?token=%s&sign=%s", BACKOFFICE_URL, token, sign));
+
         } else {
             writer.append("<div style='display: flex;flex-direction: column; justify-content: center; align-items: center;text-align: center;min-height: 100vh'>");
             writer.append("<p style='font-size: 25px';'text-align: center;'>Error, intente de nuevo o contacte con el administrador.</p>\r\n");
@@ -68,7 +73,6 @@ public class InitAuth extends HttpServlet {
                 .append("</form>\r\n")
                 .append("</body>\r\n")
                 .append("</html>\r\n");
-
     }
 
 }
