@@ -17,6 +17,7 @@ public class InitAuth extends HttpServlet {
     private String BACKOFFICE_URL = "localhost:4200/#/auth/login/check";
 
 
+
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         String token = req.getParameter("token");
         String sign = req.getParameter("sign");

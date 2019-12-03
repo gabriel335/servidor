@@ -1,15 +1,39 @@
 package ar.incluit.fintech.anses.servidor.service;
 
 import com.entrevistas.wsdl.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.ws.WebServiceMessage;
+import org.springframework.ws.client.core.WebServiceMessageCallback;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
+import org.springframework.ws.soap.SoapHeader;
+import org.springframework.ws.soap.SoapMessage;
 import org.springframework.ws.soap.client.core.SoapActionCallback;
+import org.springframework.ws.soap.saaj.SaajSoapMessage;
+import org.springframework.ws.transport.context.TransportContext;
+import org.springframework.ws.transport.context.TransportContextHolder;
+import org.springframework.ws.transport.http.HttpUrlConnection;
+import org.springframework.xml.transform.StringSource;
+import sun.rmi.runtime.Log;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
+import java.io.IOException;
 
 public class SOAPConector extends WebServiceGatewaySupport {
 
+    private static final Logger log = LoggerFactory.getLogger(SOAPConector.class);
+
 
     @Value("${ws.url}")
-    private String WSURL = "localhost:9090/ws/entrevistas.wsdl";
+    private String WSURL = "http://localhost:9090/ws/entrevistas.wsdl";
+
+    private String namespaceDirectorURL = "xmlns=http://director.anses.gov.ar";
 
 
     // ROLES ENDPOINT
@@ -17,7 +41,24 @@ public class SOAPConector extends WebServiceGatewaySupport {
         GetRolesRequest request = new GetRolesRequest();
 
         GetRolesResponse response = (GetRolesResponse) getWebServiceTemplate().marshalSendAndReceive(
-                request, new SoapActionCallback(WSURL));
+                "http://localhost:9090/ws/entrevistas.wsdl", request, new WebServiceMessageCallback() {
+
+                    @Override
+                    public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
+                        if (message instanceof SaajSoapMessage) {
+                            try {
+                                SaajSoapMessage soapMessage = (SaajSoapMessage) message;
+                                SoapHeader soapHeader = soapMessage.getSoapHeader();
+                                StringSource headerSource = new StringSource("<token></token>\n<sign>test213</sign>");
+                                Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                                transformer.transform(headerSource, soapHeader.getResult());
+                            } catch (TransformerFactoryConfigurationError | TransformerException e) {
+                                logger.error(e.getMessage(), e);
+                            }
+                        }
+                        log.info("log", message);
+                    }
+                });
 
         return response;
     }
@@ -247,7 +288,6 @@ public class SOAPConector extends WebServiceGatewaySupport {
 
         return response;
     }
-
 
 
 }
