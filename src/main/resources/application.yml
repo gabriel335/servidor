@@ -14,3 +14,5 @@ spring:
 
 backoffice:
   url: local:4200/#/auth/login/check
+ws:
+  url: localhost:9090/ws/entrevistas.wsdl

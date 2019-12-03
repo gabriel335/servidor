@@ -1,0 +1,758 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="entrevistasEndpoint"
+           targetNamespace="entrevistasEndpoint"
+           elementFormDefault="qualified"
+>
+
+    <!-- ACCOUNT -->
+
+    <xs:element name="authenticateRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name= "username" type="xs:string"/>
+                <xs:element name= "password" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="authenticateResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name= "token" type="xs:string"/>
+                <xs:element name= "usuName" type="xs:string"/>
+                <xs:element name= "usuPin" type="xs:integer"/>
+                <xs:element name= "usuDoc" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="authenticateRequestApp">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name= "username" type="xs:string"/>
+                <xs:element name= "password" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="authenticateResponseApp">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name= "forms" maxOccurs="unbounded" type="tns:formInfo"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateSignatureRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name= "id" type="xs:long"/>
+                <xs:element name= "usiBase64text" type="xs:string"/>
+                <xs:element name= "usiFilename" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateSignatureResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name= "status" type="tns:serviceStatus"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="exportDataRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name= "username" type="xs:string"/>
+                <xs:element name= "password" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="exportDataResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name= "status" type="tns:serviceStatus"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="fileImportRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name= "username" type="xs:string"/>
+                <xs:element name= "password" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="fileImportResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name= "status" type="tns:serviceStatus"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="formInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="forAditionalNotes" type="xs:string"/>
+            <xs:element name="forBackStatus" type="xs:integer"/>
+            <xs:element name="forAction" type="xs:string"/>
+            <xs:element name="formCategory" type="tns:formCategoryInfo"/>
+            <xs:element name="formStatus" type="tns:formStatusInfo"/>
+            <xs:element name="intervieweeDes" type="tns:intervieweeInfo"/>
+            <xs:element name="procedure" type="tns:procedureInfo"/>
+            <xs:element name="headerDdjj" type="tns:headerDdjjInfo"/>
+            <xs:element name="headerDdjjTc" type="tns:headerDdjjTcInfo"/>
+            <xs:element name="sets" maxOccurs="unbounded" type="tns:interviewSetInfo"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="inteviewFormInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="forAditionalNotes" type="xs:string"/>
+            <xs:element name="forBackStatus" type="xs:long"/>
+            <xs:element name="forAction" type="xs:string"/>
+            <xs:element name="formCategory" type="tns:formCategoryInfo"/>
+            <xs:element name="formStatus" type="tns:formStatusInfo"/>
+            <xs:element name="interviewee" type="tns:intervieweeInfo"/>
+            <xs:element name="intervieweeDes" type="tns:intervieweeInfo"/>
+            <xs:element name="intervieweeSignature" type="tns:intervieweeSigntureInfo"/>
+            <xs:element name="set"  type="tns:setInfo"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="headerDdjjInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="hdjRecord" type="xs:string"/>
+            <xs:element name="hdjSolName" type="xs:string"/>
+            <xs:element name="hdjSolDoc" type="xs:string"/>
+            <xs:element name="docType" type="tns:docTypeInfo"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="headerDdjjTcInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="hdtRecord" type="xs:string"/>
+            <xs:element name="hdtSolName" type="xs:string"/>
+            <xs:element name="hdtSolDoc" type="xs:string"/>
+            <xs:element name="hdtCauName" type="xs:string"/>
+            <xs:element name="hdtCauDoc" type="xs:string"/>
+            <xs:element name="docTypeSol" type="tns:docTypeInfo"/>
+            <xs:element name="docTypeCau" type="tns:docTypeInfo"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!--FormCategory-->
+    <xs:complexType name="formCategoryInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="fcaName" type="xs:string"/>
+            <xs:element name="fcaformType" type="xs:string"/>
+            <xs:element name="header" type="tns:headerInfo"/>
+            <xs:element name="rolInterviewee" type="tns:rolIntervieweeInfo"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!---->
+
+    <!--Header-->
+    <xs:complexType name="headerInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="heaName" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!---->
+
+    <!--RolInterviewee-->
+    <xs:complexType name="rolIntervieweeInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="roiName" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!---->
+
+    <!-- Form -->
+    <xs:complexType name="formStatusInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="fstName" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!--Interviewee-->
+    <xs:complexType name="intervieweeInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="intName" type="xs:string"/>
+            <xs:element name="intDoc" type="xs:string"/>
+            <xs:element name="docType" type="tns:docTypeInfo"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!---->
+
+    <!--Doctype-->
+    <xs:complexType name="docTypeInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="docName" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!---->
+
+    <!--Procedure-->
+    <xs:complexType name="procedureInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="proAddress" type="xs:string"/>
+            <xs:element name="proAddressNumber" type="xs:string"/>
+            <xs:element name="proAddressFloor" type="xs:string"/>
+            <xs:element name="proAddressDepartament" type="xs:string"/>
+            <xs:element name="proAddressZipcode" type="xs:string"/>
+            <xs:element name="proAddressProvince" type="xs:string"/>
+            <xs:element name="proAddressNeighborhood" type="xs:string"/>
+            <xs:element name="proAddressLocality" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!---->
+
+    <!--Set-->
+    <xs:complexType name="setInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="user" type="tns:questionInfo"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!---->
+
+    <!--Set-->
+    <xs:complexType name="interviewSetInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="questions" maxOccurs="unbounded" type="tns:questionInfo"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!---->
+
+    <xs:complexType name="questionInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="queDescription" type="xs:string"/>
+            <xs:element name="queStatus" type="xs:integer"/>
+            <xs:element name="questionType" type="tns:questionTypeInfo"/>
+            <xs:element name="set" type="tns:setInfo"/>
+            <xs:element name="user" type="tns:userInfo"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!--QuestionType-->
+    <xs:complexType name="questionTypeInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="qtyName" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!---->
+
+    <!-- FORM -->
+
+    <xs:element name="updateFormRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="username" type="xs:string"/>
+                <xs:element name="password" type="xs:string"/>
+                <xs:element name="procedure" type="tns:procedureInfo"/>
+                <xs:element name="interviewee" type="tns:intervieweeAdd"/>
+                <xs:element name="answer" type="tns:answersAdd" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="image" type="tns:imageAdd" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateFormResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="status" type="tns:serviceStatus"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="formExportInfo">
+        <xs:sequence>
+            <xs:element name="procedure" type="tns:procedureInfo"/>
+            <xs:element name="interviewee" type="tns:intervieweeAdd"/>
+            <xs:element name="image" type="tns:imageAdd" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="answer" type="tns:answersAdd" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="intervieweeAdd">
+        <xs:sequence>
+            <xs:element name="IntervieweeName" type="xs:string"/>
+            <xs:element name="IntervieweeDoc" type="xs:string"/>
+            <xs:element name="forIntSignature" type="xs:string"/>
+            <xs:element name="forIntDocTypeId" type="xs:long"/>
+            <xs:element name="forIntDNIImageF" type="xs:string"/>
+            <xs:element name="forIntDNIImageR" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="intervieweeSignatureAdd">
+        <xs:sequence>
+            <xs:element name="isiBase64Text" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="answersAdd">
+        <xs:sequence>
+            <xs:element name="questionId" type="xs:long"/>
+            <xs:element name="questionAnswer" type="xs:string"/>
+            <xs:element name="questionObs" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="imageAdd">
+        <xs:sequence>
+            <xs:element name="forEvidenceImage" type="xs:string"/>
+            <xs:element name="forEvidenceType" type="xs:string"/>
+            <xs:element name="forEvidenceGeoPos" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- QUESTIONS -->
+
+    <xs:element name="addQuestionRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="question" type="xs:string"/>
+                <xs:element name="questionType" type="xs:string"/>
+                <xs:element name="setId" type="xs:long"/>
+                <xs:element name="username" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="addQuestionResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="status" type="tns:serviceStatus"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateQuestionRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+                <xs:element name="question" type="xs:string"/>
+                <xs:element name="questionType" type="xs:string"/>
+                <xs:element name="username" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateQuestionResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="status" type="tns:serviceStatus"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAllQuestionRequest">
+        <xs:complexType/>
+    </xs:element>
+
+    <xs:element name="getAllQuestionResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="question" maxOccurs="unbounded" type="tns:questionInfo"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getQuestionRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getQuestionResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="question" type="tns:questionInfo"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getLastIdRequest">
+        <xs:complexType/>
+    </xs:element>
+
+    <xs:element name="getLastIdResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="changeStatusRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="questions" maxOccurs="unbounded" type="tns:changeStatusInfo"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="changeStatusResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="status" type="tns:serviceStatus"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteQuestionRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteQuestionResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="status" type="tns:serviceStatus"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="findQuestionBySetRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="setId" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="findQuestionBySetResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="questions" maxOccurs="unbounded" type="tns:questionInfo"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="changeStatusInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="status" type="xs:integer"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="userInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="usuName" type="xs:string"/>
+            <xs:element name="usuUsername" type="xs:string"/>
+            <xs:element name="usuPin" type="xs:integer"/>
+            <xs:element name="usuDoc" type="xs:string"/>
+            <xs:element name="usuEmail" type="xs:string"/>
+            <xs:element name="usuStatus" type="xs:integer"/>
+            <xs:element name="usuNotifEmail" type="xs:string"/>
+            <xs:element name="rol" type="tns:rolInfo"/>
+            <xs:element name="signature" type="tns:userSignatureInfo"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!--Rol-->
+    <xs:complexType name="rolInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="rolName" type="xs:string"/>
+            <xs:element name="rolApp" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!---->
+
+    <!--UserSignature-->
+    <xs:complexType name="userSignatureInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="usiBase64text" type="xs:string"/>
+            <xs:element name="usiFilename" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!---->
+
+    <!-- QUESTION_TYPE -->
+
+    <xs:element name="addQTyRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="qtyName" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="addQTyResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="status" type="tns:serviceStatus"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAllQTyRequest">
+        <xs:complexType/>
+    </xs:element>
+
+    <xs:element name="getAllQTyResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="questionType" maxOccurs="unbounded" type="tns:questionTypeInfo"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- ROLES -->
+
+    <xs:element name="getRolesRequest">
+        <xs:complexType/>
+    </xs:element>
+
+    <xs:element name="getRolesResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="roles" maxOccurs="unbounded" type="tns:rolInfo"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+    <!-- USERS -->
+
+    <xs:element name="addUserRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="usuName" type="xs:string"/>
+                <xs:element name="usuUsername" type="xs:string"/>
+                <xs:element name="usuPin" type="xs:integer"/>
+                <xs:element name="usuDoc" type="xs:string"/>
+                <xs:element name="usuEmail" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="rolName" type="xs:string"/>
+                <xs:element name="usuNotifEmail" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="addUserResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="serviceStatus" type="tns:serviceStatus"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getUserRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name= "id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getUserResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="user" type="tns:userInfo"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAllUsersRequest">
+        <xs:complexType/>
+    </xs:element>
+
+    <xs:element name="getAllUsersResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="user" maxOccurs="unbounded" type="tns:userInfo"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateUserRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="users" type="tns:userUpdate"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateUserResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="serviceStatus" type="tns:serviceStatus"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="disabledUserRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="disabledUserResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="serviceStatus" type="tns:serviceStatus"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="enabledUserRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="enabledUserResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="status" type="tns:serviceStatus"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getUsersByTypeRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="type" type="xs:string"/>
+                <xs:element name="search" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getUsersByTypeResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="users" maxOccurs="unbounded" type="tns:userInfo"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getUserForUsernameRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="username" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getUserForUsernameResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="user" type="tns:userInfo"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="serviceStatus">
+        <xs:sequence>
+            <xs:element name="statusCode" type="xs:string"/>
+            <xs:element name="message" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="userUpdate">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="usuName" type="xs:string"/>
+            <xs:element name="usuUsername" type="xs:string"/>
+            <xs:element name="usuPin" type="xs:integer"/>
+            <xs:element name="usuDoc" type="xs:string"/>
+            <xs:element name="usuEmail" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="rolName" type="xs:string"/>
+            <xs:element name="usuNotifEmail" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!--IntervieweeSignature-->
+    <xs:complexType name="intervieweeSigntureInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="isiBase64text" type="xs:string"/>
+            <xs:element name="isiFilename" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!---->
+
+    <!-- SET -->
+
+    <xs:element name="addSetRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+                <xs:element name="username" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="addSetResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="status" type="tns:serviceStatus"/>
+                <xs:element name="set" type="tns:setInfo"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAllSetRequest">
+        <xs:complexType/>
+    </xs:element>
+
+    <xs:element name="getAllSetResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="sets" maxOccurs="unbounded" type="tns:setInfo"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteSetRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteSetResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="status" type="tns:serviceStatus"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+</xs:schema>

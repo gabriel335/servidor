@@ -1,31 +1,49 @@
 package ar.incluit.fintech.anses.servidor.config;
 
-import ar.incluit.fintech.anses.servidor.service.SOAPConector;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.ws.config.annotation.EnableWs;
 import org.springframework.ws.config.annotation.WsConfigurerAdapter;
 import org.springframework.ws.server.EndpointInterceptor;
+import org.springframework.ws.transport.http.MessageDispatcherServlet;
+import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition;
+import org.springframework.xml.xsd.SimpleXsdSchema;
+import org.springframework.xml.xsd.XsdSchema;
 
 import java.util.List;
+import java.util.Properties;
 
-
+@EnableWs
 @Configuration
 public class WebServiceConfig extends WsConfigurerAdapter {
 
     @Bean
-    public Jaxb2Marshaller marshaller() {
-        Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-        marshaller.setContextPath("com.entrevistas.wsdl");
-        return marshaller;
+    public ServletRegistrationBean messageDispatcherServlet(ApplicationContext context) {
+        MessageDispatcherServlet messageDispatcherServlet = new MessageDispatcherServlet();
+        messageDispatcherServlet.setApplicationContext(context);
+        messageDispatcherServlet.setTransformWsdlLocations(true);
+        return new ServletRegistrationBean(
+                messageDispatcherServlet,
+                "/server/*"
+        );
     }
+
+    @Bean(name = "servidor")
+    public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema articlesSchema) {
+        DefaultWsdl11Definition definition = new DefaultWsdl11Definition();
+        definition.setPortTypeName("AuthPort");
+        definition.setTargetNamespace("entrevistasEndpoint");
+        definition.setLocationUri("/server");
+        definition.setSchema(articlesSchema);
+        return definition;
+    }
+
     @Bean
-    public SOAPConector articleClient(Jaxb2Marshaller marshaller) {
-        SOAPConector client = new SOAPConector();
-        client.setDefaultUri("http://localhost:9090/ws/entrevistas.wsdl");
-        client.setMarshaller(marshaller);
-        client.setUnmarshaller(marshaller);
-        return client;
+    public XsdSchema articlesSchema() {
+        return new SimpleXsdSchema(new ClassPathResource("soap/servidor.xsd"));
     }
 
     @Override
@@ -34,5 +52,6 @@ public class WebServiceConfig extends WsConfigurerAdapter {
         // register global interceptor
         interceptors.add(new CustomEndpointInterceptor());
     }
+
 
 }
