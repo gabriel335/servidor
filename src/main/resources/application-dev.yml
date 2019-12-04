@@ -1,6 +1,12 @@
 server:
   port: 4000
 
+logging:
+  level:
+    ROOT: DEBUG
+    io.github.jhipster: DEBUG
+    ar.incluit.fintech.anses.servidor: DEBUG
+
 backoffice:
   url: local:4200/#/auth/login/check
 ws:

@@ -2,10 +2,10 @@ server:
     port: 4000
 
 logging:
-    level:
-          or:
-            springframework:
-                            ws: TRACE
+  level:
+    ROOT: DEBUG
+    io.github.jhipster: DEBUG
+    ar.incluit.fintech.anses.servidor: DEBUG
 
 spring:
   batch:
