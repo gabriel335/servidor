@@ -31,4 +31,11 @@ public class Session {
         this.sign = sign;
     }
 
+    public Session() {
+    }
+
+    public Session(String token, String sign) {
+        this.token = token;
+        this.sign = sign;
+    }
 }

@@ -6,10 +6,14 @@ import ar.incluit.fintech.anses.servidor.web.servidor.SendUUIDResponse;
 import com.entrevistas.wsdl.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
+
+import java.time.LocalDateTime;
 
 @Endpoint
 public class SoapEndpoint {
@@ -25,6 +29,9 @@ public class SoapEndpoint {
     public SoapEndpoint(SOAPConector soapConector) {
         this.soapConector = soapConector;
     }
+
+    @Autowired
+    SessionStorage sessionStorage;
 
     // ROLES ENDPOINT
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getRolesRequest")
@@ -244,9 +251,24 @@ public class SoapEndpoint {
     @ResponsePayload
     public SendUUIDResponse sendUUID(@RequestPayload SendUUIDRequest request) {
         SendUUIDResponse response = new SendUUIDResponse();
-        session.setUuid(request.getUuid());
+        
+        sessionStorage.getSessions().put(request.getUuid(),new Session(request.getToken(),request.getSign()));
+        System.out.println(sessionStorage.getSessions().get(request.getUuid()).getToken());
+
+
+        //session.setUuid(request.getUuid());
         return response;
     }
 
+
+        Session getSession(String uuid){
+            Session session = null;
+
+            try {
+                session = sessionStorage.getSessions().get(uuid);
+            }
+            catch (Exception ex){ex.printStackTrace();}
+            return session;
+        }
 
 }
