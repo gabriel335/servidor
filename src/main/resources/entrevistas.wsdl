@@ -1,0 +1,1387 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="entrevistasEndpoint" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="entrevistasEndpoint" targetNamespace="entrevistasEndpoint">
+  <wsdl:types>
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="entrevistasEndpoint">
+
+    <!-- ACCOUNT -->
+
+    <xs:element name="authenticateRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="username" type="xs:string"/>
+                <xs:element name="password" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="authenticateResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="token" type="xs:string"/>
+                <xs:element name="usuName" type="xs:string"/>
+                <xs:element name="usuPin" type="xs:integer"/>
+                <xs:element name="usuDoc" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="authenticateRequestApp">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="username" type="xs:string"/>
+                <xs:element name="password" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="authenticateResponseApp">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" name="forms" type="tns:formInfo"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateSignatureRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+                <xs:element name="usiBase64text" type="xs:string"/>
+                <xs:element name="usiFilename" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateSignatureResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="status" type="tns:serviceStatus"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="exportDataRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="username" type="xs:string"/>
+                <xs:element name="password" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="exportDataResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="status" type="tns:serviceStatus"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="fileImportRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="username" type="xs:string"/>
+                <xs:element name="password" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="fileImportResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="status" type="tns:serviceStatus"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="formInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="forAditionalNotes" type="xs:string"/>
+            <xs:element name="forBackStatus" type="xs:integer"/>
+            <xs:element name="forAction" type="xs:string"/>
+            <xs:element name="formCategory" type="tns:formCategoryInfo"/>
+            <xs:element name="formStatus" type="tns:formStatusInfo"/>
+            <xs:element name="intervieweeDes" type="tns:intervieweeInfo"/>
+            <xs:element name="procedure" type="tns:procedureInfo"/>
+            <xs:element name="headerDdjj" type="tns:headerDdjjInfo"/>
+            <xs:element name="headerDdjjTc" type="tns:headerDdjjTcInfo"/>
+            <xs:element maxOccurs="unbounded" name="sets" type="tns:interviewSetInfo"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="inteviewFormInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="forAditionalNotes" type="xs:string"/>
+            <xs:element name="forBackStatus" type="xs:long"/>
+            <xs:element name="forAction" type="xs:string"/>
+            <xs:element name="formCategory" type="tns:formCategoryInfo"/>
+            <xs:element name="formStatus" type="tns:formStatusInfo"/>
+            <xs:element name="interviewee" type="tns:intervieweeInfo"/>
+            <xs:element name="intervieweeDes" type="tns:intervieweeInfo"/>
+            <xs:element name="intervieweeSignature" type="tns:intervieweeSigntureInfo"/>
+            <xs:element name="set" type="tns:setInfo"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="headerDdjjInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="hdjRecord" type="xs:string"/>
+            <xs:element name="hdjSolName" type="xs:string"/>
+            <xs:element name="hdjSolDoc" type="xs:string"/>
+            <xs:element name="docType" type="tns:docTypeInfo"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="headerDdjjTcInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="hdtRecord" type="xs:string"/>
+            <xs:element name="hdtSolName" type="xs:string"/>
+            <xs:element name="hdtSolDoc" type="xs:string"/>
+            <xs:element name="hdtCauName" type="xs:string"/>
+            <xs:element name="hdtCauDoc" type="xs:string"/>
+            <xs:element name="docTypeSol" type="tns:docTypeInfo"/>
+            <xs:element name="docTypeCau" type="tns:docTypeInfo"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!--FormCategory-->
+    <xs:complexType name="formCategoryInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="fcaName" type="xs:string"/>
+            <xs:element name="fcaformType" type="xs:string"/>
+            <xs:element name="header" type="tns:headerInfo"/>
+            <xs:element name="rolInterviewee" type="tns:rolIntervieweeInfo"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!---->
+
+    <!--Header-->
+    <xs:complexType name="headerInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="heaName" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!---->
+
+    <!--RolInterviewee-->
+    <xs:complexType name="rolIntervieweeInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="roiName" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!---->
+
+    <!-- Form -->
+    <xs:complexType name="formStatusInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="fstName" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!--Interviewee-->
+    <xs:complexType name="intervieweeInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="intName" type="xs:string"/>
+            <xs:element name="intDoc" type="xs:string"/>
+            <xs:element name="docType" type="tns:docTypeInfo"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!---->
+
+    <!--Doctype-->
+    <xs:complexType name="docTypeInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="docName" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!---->
+
+    <!--Procedure-->
+    <xs:complexType name="procedureInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="proAddress" type="xs:string"/>
+            <xs:element name="proAddressNumber" type="xs:string"/>
+            <xs:element name="proAddressFloor" type="xs:string"/>
+            <xs:element name="proAddressDepartament" type="xs:string"/>
+            <xs:element name="proAddressZipcode" type="xs:string"/>
+            <xs:element name="proAddressProvince" type="xs:string"/>
+            <xs:element name="proAddressNeighborhood" type="xs:string"/>
+            <xs:element name="proAddressLocality" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!---->
+
+    <!--Set-->
+    <xs:complexType name="setInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="user" type="tns:questionInfo"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!---->
+
+    <!--Set-->
+    <xs:complexType name="interviewSetInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element maxOccurs="unbounded" name="questions" type="tns:questionInfo"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!---->
+
+    <xs:complexType name="questionInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="queDescription" type="xs:string"/>
+            <xs:element name="queStatus" type="xs:integer"/>
+            <xs:element name="questionType" type="tns:questionTypeInfo"/>
+            <xs:element name="set" type="tns:setInfo"/>
+            <xs:element name="user" type="tns:userInfo"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!--QuestionType-->
+    <xs:complexType name="questionTypeInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="qtyName" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!---->
+
+    <!-- FORM -->
+
+    <xs:element name="updateFormRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="username" type="xs:string"/>
+                <xs:element name="password" type="xs:string"/>
+                <xs:element name="procedure" type="tns:procedureInfo"/>
+                <xs:element name="interviewee" type="tns:intervieweeAdd"/>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="answer" type="tns:answersAdd"/>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="image" type="tns:imageAdd"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateFormResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="status" type="tns:serviceStatus"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="formExportInfo">
+        <xs:sequence>
+            <xs:element name="procedure" type="tns:procedureInfo"/>
+            <xs:element name="interviewee" type="tns:intervieweeAdd"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="image" type="tns:imageAdd"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="answer" type="tns:answersAdd"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="intervieweeAdd">
+        <xs:sequence>
+            <xs:element name="IntervieweeName" type="xs:string"/>
+            <xs:element name="IntervieweeDoc" type="xs:string"/>
+            <xs:element name="forIntSignature" type="xs:string"/>
+            <xs:element name="forIntDocTypeId" type="xs:long"/>
+            <xs:element name="forIntDNIImageF" type="xs:string"/>
+            <xs:element name="forIntDNIImageR" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="intervieweeSignatureAdd">
+        <xs:sequence>
+            <xs:element name="isiBase64Text" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="answersAdd">
+        <xs:sequence>
+            <xs:element name="questionId" type="xs:long"/>
+            <xs:element name="questionAnswer" type="xs:string"/>
+            <xs:element name="questionObs" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="imageAdd">
+        <xs:sequence>
+            <xs:element name="forEvidenceImage" type="xs:string"/>
+            <xs:element name="forEvidenceType" type="xs:string"/>
+            <xs:element name="forEvidenceGeoPos" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- QUESTIONS -->
+
+    <xs:element name="addQuestionRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="question" type="xs:string"/>
+                <xs:element name="questionType" type="xs:string"/>
+                <xs:element name="setId" type="xs:long"/>
+                <xs:element name="username" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="addQuestionResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="status" type="tns:serviceStatus"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateQuestionRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+                <xs:element name="question" type="xs:string"/>
+                <xs:element name="questionType" type="xs:string"/>
+                <xs:element name="username" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateQuestionResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="status" type="tns:serviceStatus"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAllQuestionRequest">
+        <xs:complexType/>
+    </xs:element>
+
+    <xs:element name="getAllQuestionResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" name="question" type="tns:questionInfo"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getQuestionRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getQuestionResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="question" type="tns:questionInfo"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getLastIdRequest">
+        <xs:complexType/>
+    </xs:element>
+
+    <xs:element name="getLastIdResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="changeStatusRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" name="questions" type="tns:changeStatusInfo"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="changeStatusResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="status" type="tns:serviceStatus"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteQuestionRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteQuestionResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="status" type="tns:serviceStatus"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="findQuestionBySetRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="setId" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="findQuestionBySetResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" name="questions" type="tns:questionInfo"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="changeStatusInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="status" type="xs:integer"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="userInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="usuName" type="xs:string"/>
+            <xs:element name="usuUsername" type="xs:string"/>
+            <xs:element name="usuPin" type="xs:integer"/>
+            <xs:element name="usuDoc" type="xs:string"/>
+            <xs:element name="usuEmail" type="xs:string"/>
+            <xs:element name="usuStatus" type="xs:integer"/>
+            <xs:element name="usuNotifEmail" type="xs:string"/>
+            <xs:element name="rol" type="tns:rolInfo"/>
+            <xs:element name="signature" type="tns:userSignatureInfo"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!--Rol-->
+    <xs:complexType name="rolInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="rolName" type="xs:string"/>
+            <xs:element name="rolApp" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!---->
+
+    <!--UserSignature-->
+    <xs:complexType name="userSignatureInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="usiBase64text" type="xs:string"/>
+            <xs:element name="usiFilename" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!---->
+
+    <!-- QUESTION_TYPE -->
+
+    <xs:element name="addQTyRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="qtyName" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="addQTyResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="status" type="tns:serviceStatus"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAllQTyRequest">
+        <xs:complexType/>
+    </xs:element>
+
+    <xs:element name="getAllQTyResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" name="questionType" type="tns:questionTypeInfo"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- ROLES -->
+
+    <xs:element name="getRolesRequest">
+        <xs:complexType/>
+    </xs:element>
+
+    <xs:element name="getRolesResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" name="roles" type="tns:rolInfo"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+    <!-- USERS -->
+
+    <xs:element name="addUserRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="usuName" type="xs:string"/>
+                <xs:element name="usuUsername" type="xs:string"/>
+                <xs:element name="usuPin" type="xs:integer"/>
+                <xs:element name="usuDoc" type="xs:string"/>
+                <xs:element maxOccurs="1" minOccurs="0" name="usuEmail" type="xs:string"/>
+                <xs:element name="rolName" type="xs:string"/>
+                <xs:element name="usuNotifEmail" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="addUserResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="serviceStatus" type="tns:serviceStatus"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getUserRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getUserResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="user" type="tns:userInfo"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAllUsersRequest">
+        <xs:complexType/>
+    </xs:element>
+
+    <xs:element name="getAllUsersResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" name="user" type="tns:userInfo"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateUserRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="users" type="tns:userUpdate"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateUserResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="serviceStatus" type="tns:serviceStatus"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="disabledUserRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="disabledUserResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="serviceStatus" type="tns:serviceStatus"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="enabledUserRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="enabledUserResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="status" type="tns:serviceStatus"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getUsersByTypeRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="type" type="xs:string"/>
+                <xs:element name="search" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getUsersByTypeResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" name="users" type="tns:userInfo"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getUserForUsernameRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="username" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getUserForUsernameResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="user" type="tns:userInfo"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="serviceStatus">
+        <xs:sequence>
+            <xs:element name="statusCode" type="xs:string"/>
+            <xs:element name="message" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="userUpdate">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="usuName" type="xs:string"/>
+            <xs:element name="usuUsername" type="xs:string"/>
+            <xs:element name="usuPin" type="xs:integer"/>
+            <xs:element name="usuDoc" type="xs:string"/>
+            <xs:element maxOccurs="1" minOccurs="0" name="usuEmail" type="xs:string"/>
+            <xs:element name="rolName" type="xs:string"/>
+            <xs:element name="usuNotifEmail" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!--IntervieweeSignature-->
+    <xs:complexType name="intervieweeSigntureInfo">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="isiBase64text" type="xs:string"/>
+            <xs:element name="isiFilename" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!---->
+
+    <!-- SET -->
+
+    <xs:element name="addSetRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+                <xs:element name="username" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="addSetResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="status" type="tns:serviceStatus"/>
+                <xs:element name="set" type="tns:setInfo"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAllSetRequest">
+        <xs:complexType/>
+    </xs:element>
+
+    <xs:element name="getAllSetResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" name="sets" type="tns:setInfo"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteSetRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteSetResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="status" type="tns:serviceStatus"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="disabledUserResponse">
+    <wsdl:part element="tns:disabledUserResponse" name="disabledUserResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateUserResponse">
+    <wsdl:part element="tns:updateUserResponse" name="updateUserResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="findQuestionBySetRequest">
+    <wsdl:part element="tns:findQuestionBySetRequest" name="findQuestionBySetRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteQuestionRequest">
+    <wsdl:part element="tns:deleteQuestionRequest" name="deleteQuestionRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="enabledUserResponse">
+    <wsdl:part element="tns:enabledUserResponse" name="enabledUserResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAllQuestionRequest">
+    <wsdl:part element="tns:getAllQuestionRequest" name="getAllQuestionRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="fileImportRequest">
+    <wsdl:part element="tns:fileImportRequest" name="fileImportRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAllQuestionResponse">
+    <wsdl:part element="tns:getAllQuestionResponse" name="getAllQuestionResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteQuestionResponse">
+    <wsdl:part element="tns:deleteQuestionResponse" name="deleteQuestionResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteSetResponse">
+    <wsdl:part element="tns:deleteSetResponse" name="deleteSetResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateSignatureRequest">
+    <wsdl:part element="tns:updateSignatureRequest" name="updateSignatureRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="fileImportResponse">
+    <wsdl:part element="tns:fileImportResponse" name="fileImportResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAllQTyRequest">
+    <wsdl:part element="tns:getAllQTyRequest" name="getAllQTyRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateSignatureResponse">
+    <wsdl:part element="tns:updateSignatureResponse" name="updateSignatureResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="exportDataResponse">
+    <wsdl:part element="tns:exportDataResponse" name="exportDataResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteSetRequest">
+    <wsdl:part element="tns:deleteSetRequest" name="deleteSetRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getLastIdRequest">
+    <wsdl:part element="tns:getLastIdRequest" name="getLastIdRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="changeStatusRequest">
+    <wsdl:part element="tns:changeStatusRequest" name="changeStatusRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="addUserRequest">
+    <wsdl:part element="tns:addUserRequest" name="addUserRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getUserRequest">
+    <wsdl:part element="tns:getUserRequest" name="getUserRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="addQTyResponse">
+    <wsdl:part element="tns:addQTyResponse" name="addQTyResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="addSetResponse">
+    <wsdl:part element="tns:addSetResponse" name="addSetResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="authenticateResponse">
+    <wsdl:part element="tns:authenticateResponse" name="authenticateResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateUserRequest">
+    <wsdl:part element="tns:updateUserRequest" name="updateUserRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="addQTyRequest">
+    <wsdl:part element="tns:addQTyRequest" name="addQTyRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="addUserResponse">
+    <wsdl:part element="tns:addUserResponse" name="addUserResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getQuestionRequest">
+    <wsdl:part element="tns:getQuestionRequest" name="getQuestionRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getLastIdResponse">
+    <wsdl:part element="tns:getLastIdResponse" name="getLastIdResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAllSetResponse">
+    <wsdl:part element="tns:getAllSetResponse" name="getAllSetResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="findQuestionBySetResponse">
+    <wsdl:part element="tns:findQuestionBySetResponse" name="findQuestionBySetResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getUsersByTypeResponse">
+    <wsdl:part element="tns:getUsersByTypeResponse" name="getUsersByTypeResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="changeStatusResponse">
+    <wsdl:part element="tns:changeStatusResponse" name="changeStatusResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAllSetRequest">
+    <wsdl:part element="tns:getAllSetRequest" name="getAllSetRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateFormRequest">
+    <wsdl:part element="tns:updateFormRequest" name="updateFormRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateQuestionRequest">
+    <wsdl:part element="tns:updateQuestionRequest" name="updateQuestionRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="authenticateRequest">
+    <wsdl:part element="tns:authenticateRequest" name="authenticateRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getUserForUsernameRequest">
+    <wsdl:part element="tns:getUserForUsernameRequest" name="getUserForUsernameRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getUserForUsernameResponse">
+    <wsdl:part element="tns:getUserForUsernameResponse" name="getUserForUsernameResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getQuestionResponse">
+    <wsdl:part element="tns:getQuestionResponse" name="getQuestionResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getUserResponse">
+    <wsdl:part element="tns:getUserResponse" name="getUserResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAllUsersRequest">
+    <wsdl:part element="tns:getAllUsersRequest" name="getAllUsersRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="addQuestionResponse">
+    <wsdl:part element="tns:addQuestionResponse" name="addQuestionResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateFormResponse">
+    <wsdl:part element="tns:updateFormResponse" name="updateFormResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="addSetRequest">
+    <wsdl:part element="tns:addSetRequest" name="addSetRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="disabledUserRequest">
+    <wsdl:part element="tns:disabledUserRequest" name="disabledUserRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="addQuestionRequest">
+    <wsdl:part element="tns:addQuestionRequest" name="addQuestionRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAllUsersResponse">
+    <wsdl:part element="tns:getAllUsersResponse" name="getAllUsersResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="enabledUserRequest">
+    <wsdl:part element="tns:enabledUserRequest" name="enabledUserRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAllQTyResponse">
+    <wsdl:part element="tns:getAllQTyResponse" name="getAllQTyResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getRolesRequest">
+    <wsdl:part element="tns:getRolesRequest" name="getRolesRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateQuestionResponse">
+    <wsdl:part element="tns:updateQuestionResponse" name="updateQuestionResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getRolesResponse">
+    <wsdl:part element="tns:getRolesResponse" name="getRolesResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="exportDataRequest">
+    <wsdl:part element="tns:exportDataRequest" name="exportDataRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getUsersByTypeRequest">
+    <wsdl:part element="tns:getUsersByTypeRequest" name="getUsersByTypeRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="AuthPort">
+    <wsdl:operation name="disabledUser">
+      <wsdl:input message="tns:disabledUserRequest" name="disabledUserRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:disabledUserResponse" name="disabledUserResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateUser">
+      <wsdl:input message="tns:updateUserRequest" name="updateUserRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:updateUserResponse" name="updateUserResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="findQuestionBySet">
+      <wsdl:input message="tns:findQuestionBySetRequest" name="findQuestionBySetRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:findQuestionBySetResponse" name="findQuestionBySetResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteQuestion">
+      <wsdl:input message="tns:deleteQuestionRequest" name="deleteQuestionRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:deleteQuestionResponse" name="deleteQuestionResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="enabledUser">
+      <wsdl:input message="tns:enabledUserRequest" name="enabledUserRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:enabledUserResponse" name="enabledUserResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAllQuestion">
+      <wsdl:input message="tns:getAllQuestionRequest" name="getAllQuestionRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:getAllQuestionResponse" name="getAllQuestionResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fileImport">
+      <wsdl:input message="tns:fileImportRequest" name="fileImportRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:fileImportResponse" name="fileImportResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteSet">
+      <wsdl:input message="tns:deleteSetRequest" name="deleteSetRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:deleteSetResponse" name="deleteSetResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateSignature">
+      <wsdl:input message="tns:updateSignatureRequest" name="updateSignatureRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:updateSignatureResponse" name="updateSignatureResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAllQTy">
+      <wsdl:input message="tns:getAllQTyRequest" name="getAllQTyRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:getAllQTyResponse" name="getAllQTyResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="exportData">
+      <wsdl:input message="tns:exportDataRequest" name="exportDataRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:exportDataResponse" name="exportDataResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getLastId">
+      <wsdl:input message="tns:getLastIdRequest" name="getLastIdRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:getLastIdResponse" name="getLastIdResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="changeStatus">
+      <wsdl:input message="tns:changeStatusRequest" name="changeStatusRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:changeStatusResponse" name="changeStatusResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="addUser">
+      <wsdl:input message="tns:addUserRequest" name="addUserRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:addUserResponse" name="addUserResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getUser">
+      <wsdl:input message="tns:getUserRequest" name="getUserRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:getUserResponse" name="getUserResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="addQTy">
+      <wsdl:input message="tns:addQTyRequest" name="addQTyRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:addQTyResponse" name="addQTyResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="addSet">
+      <wsdl:input message="tns:addSetRequest" name="addSetRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:addSetResponse" name="addSetResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="authenticate">
+      <wsdl:input message="tns:authenticateRequest" name="authenticateRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:authenticateResponse" name="authenticateResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getQuestion">
+      <wsdl:input message="tns:getQuestionRequest" name="getQuestionRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:getQuestionResponse" name="getQuestionResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAllSet">
+      <wsdl:input message="tns:getAllSetRequest" name="getAllSetRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:getAllSetResponse" name="getAllSetResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getUsersByType">
+      <wsdl:input message="tns:getUsersByTypeRequest" name="getUsersByTypeRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:getUsersByTypeResponse" name="getUsersByTypeResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateForm">
+      <wsdl:input message="tns:updateFormRequest" name="updateFormRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:updateFormResponse" name="updateFormResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateQuestion">
+      <wsdl:input message="tns:updateQuestionRequest" name="updateQuestionRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:updateQuestionResponse" name="updateQuestionResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getUserForUsername">
+      <wsdl:input message="tns:getUserForUsernameRequest" name="getUserForUsernameRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:getUserForUsernameResponse" name="getUserForUsernameResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAllUsers">
+      <wsdl:input message="tns:getAllUsersRequest" name="getAllUsersRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:getAllUsersResponse" name="getAllUsersResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="addQuestion">
+      <wsdl:input message="tns:addQuestionRequest" name="addQuestionRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:addQuestionResponse" name="addQuestionResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getRoles">
+      <wsdl:input message="tns:getRolesRequest" name="getRolesRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:getRolesResponse" name="getRolesResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="AuthPortSoap11" type="tns:AuthPort">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="disabledUser">
+      <soap:operation soapAction="disabledUser"/>
+      <wsdl:input name="disabledUserRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="disabledUserResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateUser">
+      <soap:operation soapAction="updateUser"/>
+      <wsdl:input name="updateUserRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="updateUserResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="findQuestionBySet">
+      <soap:operation soapAction="findQuestionBySet"/>
+      <wsdl:input name="findQuestionBySetRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="findQuestionBySetResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteQuestion">
+      <soap:operation soapAction="deleteQuestion"/>
+      <wsdl:input name="deleteQuestionRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="deleteQuestionResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="enabledUser">
+      <soap:operation soapAction="enabledUser"/>
+      <wsdl:input name="enabledUserRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="enabledUserResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAllQuestion">
+      <soap:operation soapAction="getAllQuestions"/>
+      <wsdl:input name="getAllQuestionRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getAllQuestionResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="fileImport">
+      <soap:operation soapAction="fileImport"/>
+      <wsdl:input name="fileImportRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="fileImportResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteSet">
+      <soap:operation soapAction="deleteSet"/>
+      <wsdl:input name="deleteSetRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="deleteSetResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateSignature">
+      <soap:operation soapAction="updateSignatureCurrentUser"/>
+      <wsdl:input name="updateSignatureRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="updateSignatureResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAllQTy">
+      <soap:operation soapAction="getAllQuestionType"/>
+      <wsdl:input name="getAllQTyRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getAllQTyResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="exportData">
+      <soap:operation soapAction="exportData"/>
+      <wsdl:input name="exportDataRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="exportDataResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getLastId">
+      <soap:operation soapAction="getLastId"/>
+      <wsdl:input name="getLastIdRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getLastIdResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="changeStatus">
+      <soap:operation soapAction="changeStatusQuestion"/>
+      <wsdl:input name="changeStatusRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="changeStatusResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="addUser">
+      <soap:operation soapAction="addUser"/>
+      <wsdl:input name="addUserRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="addUserResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getUser">
+      <soap:operation soapAction="getUser"/>
+      <wsdl:input name="getUserRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getUserResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="addQTy">
+      <soap:operation soapAction="addQuestionType"/>
+      <wsdl:input name="addQTyRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="addQTyResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="addSet">
+      <soap:operation soapAction="addSet"/>
+      <wsdl:input name="addSetRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="addSetResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="authenticate">
+      <soap:operation soapAction="authorizeUser"/>
+      <wsdl:input name="authenticateRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="authenticateResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getQuestion">
+      <soap:operation soapAction="getQuestion"/>
+      <wsdl:input name="getQuestionRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getQuestionResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAllSet">
+      <soap:operation soapAction="getAllSet"/>
+      <wsdl:input name="getAllSetRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getAllSetResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getUsersByType">
+      <soap:operation soapAction="getUsersForType"/>
+      <wsdl:input name="getUsersByTypeRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getUsersByTypeResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateForm">
+      <soap:operation soapAction="updateForm"/>
+      <wsdl:input name="updateFormRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="updateFormResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateQuestion">
+      <soap:operation soapAction="updateQuestion"/>
+      <wsdl:input name="updateQuestionRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="updateQuestionResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getUserForUsername">
+      <soap:operation soapAction="getUserForUsername"/>
+      <wsdl:input name="getUserForUsernameRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getUserForUsernameResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAllUsers">
+      <soap:operation soapAction="getAllUsers"/>
+      <wsdl:input name="getAllUsersRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getAllUsersResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="addQuestion">
+      <soap:operation soapAction="addQuestion"/>
+      <wsdl:input name="addQuestionRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="addQuestionResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getRoles">
+      <soap:operation soapAction="getAllRoles"/>
+      <wsdl:input name="getRolesRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getRolesResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AuthPortService">
+    <wsdl:port binding="tns:AuthPortSoap11" name="AuthPortSoap11">
+      <soap:address location="http://localhost:9090/ws/entrevistas.wsdl"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

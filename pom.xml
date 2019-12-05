@@ -31,6 +31,14 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/com.thetransactioncompany/cors-filter -->
+		<dependency>
+			<groupId>com.thetransactioncompany</groupId>
+			<artifactId>cors-filter</artifactId>
+			<version>2.8</version>
+		</dependency>
+
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -80,7 +88,7 @@
 					<generatePackage>com.entrevistas.wsdl</generatePackage>
 					<schemas>
 						<schema>
-							<url>http://localhost:9090/ws/entrevistas.wsdl</url>
+							<url>src/main/resources/entrevistas.wsdl</url>
 						</schema>
 					</schemas>
 				</configuration>

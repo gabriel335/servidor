@@ -13,6 +13,6 @@ spring:
       enabled: false
 
 backoffice:
-  url: local:4200/#/auth/login/check
+  url: http://localhost:4200/#/auth/login/check
 ws:
-  url: localhost:9090/ws/entrevistas.wsdl
+  url: http://localhost:9090/ws/entrevistas.wsdl
