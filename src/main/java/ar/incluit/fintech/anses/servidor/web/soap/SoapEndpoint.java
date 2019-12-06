@@ -7,13 +7,10 @@ import com.entrevistas.wsdl.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
-
-import java.time.LocalDateTime;
 
 @Endpoint
 public class SoapEndpoint {
@@ -110,7 +107,7 @@ public class SoapEndpoint {
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllQuestionRequest")
     @ResponsePayload
-    public GetAllQuestionResponse getAllQuestions(GetAllQuestionRequest request) {
+    public GetAllQuestionResponse getAllQuestions(@RequestPayload GetAllQuestionRequest request) {
         GetAllQuestionResponse response = soapConector.getAllQuestion();
         return response;
     }
@@ -251,9 +248,9 @@ public class SoapEndpoint {
     @ResponsePayload
     public SendUUIDResponse sendUUID(@RequestPayload SendUUIDRequest request) {
         SendUUIDResponse response = new SendUUIDResponse();
-        
-        sessionStorage.getSessions().put(request.getUuid(),new Session(request.getToken(),request.getSign()));
-        System.out.println(sessionStorage.getSessions().get(request.getUuid()).getToken());
+
+        sessionStorage.getSessions().put(request.getUuid(), new Session(request.getToken(), request.getSign()));
+        // System.out.println(sessionStorage.getSessions().get(request.getUuid()).getToken());
 
 
         //session.setUuid(request.getUuid());
@@ -261,14 +258,15 @@ public class SoapEndpoint {
     }
 
 
-        Session getSession(String uuid){
-            Session session = null;
+    Session getSession(String uuid) {
+        Session session = null;
 
-            try {
-                session = sessionStorage.getSessions().get(uuid);
-            }
-            catch (Exception ex){ex.printStackTrace();}
-            return session;
+        try {
+            session = sessionStorage.getSessions().get(uuid);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
+        return session;
+    }
 
 }
