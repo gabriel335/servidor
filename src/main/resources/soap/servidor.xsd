@@ -253,7 +253,7 @@
     <xs:complexType name="setInfo">
         <xs:sequence>
             <xs:element name="id" type="xs:long"/>
-            <xs:element name="user" type="tns:questionInfo"/>
+            <xs:element name="user" type="tns:userInfo"/>
         </xs:sequence>
     </xs:complexType>
     <!---->

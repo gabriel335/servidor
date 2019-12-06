@@ -351,6 +351,7 @@
                 <xs:element name="id" type="xs:long"/>
                 <xs:element name="question" type="xs:string"/>
                 <xs:element name="questionType" type="xs:string"/>
+                <xs:element name="setId" type="xs:long"/>
                 <xs:element name="username" type="xs:string"/>
             </xs:sequence>
         </xs:complexType>
@@ -594,7 +595,7 @@
     <xs:element name="updateUserRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="users" type="tns:userUpdate"/>
+                <xs:element name="user" type="tns:userUpdate"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
