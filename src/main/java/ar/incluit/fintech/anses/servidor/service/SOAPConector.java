@@ -113,6 +113,23 @@ public class SOAPConector extends WebServiceGatewaySupport {
         return response;
     }
 
+    public GetAllSetFilteredResponse getAllSetFiltered(GetAllSetFilteredRequest getAllSetFilteredRequest) {
+
+        GetAllSetFilteredResponse response = (GetAllSetFilteredResponse) getWebServiceTemplate().marshalSendAndReceive(
+                WSURL, getAllSetFilteredRequest, new WebServiceMessageCallback() {
+
+                    @Override
+
+                    public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
+                        processRequest(message);
+
+                    }
+                });
+
+        return response;
+    }
+
+
     // QUESTION TYPE ENDPOINT
     public AddQTyResponse addQTy(AddQTyRequest addQTyRequest) {
 

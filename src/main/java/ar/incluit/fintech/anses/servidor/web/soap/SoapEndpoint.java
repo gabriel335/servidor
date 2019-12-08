@@ -64,6 +64,14 @@ public class SoapEndpoint {
         return response;
     }
 
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllSetFilteredRequest")
+    @ResponsePayload
+    public GetAllSetFilteredResponse getAllSetFiltered(@RequestPayload GetAllSetFilteredRequest request) {
+        log.debug("Request to get set filtering that is not in use by list form");
+        GetAllSetFilteredResponse response = soapConector.getAllSetFiltered(request);
+        return response;
+    }
+
     //QUESTION TYPE
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "AddQTyRequest")
     @ResponsePayload
