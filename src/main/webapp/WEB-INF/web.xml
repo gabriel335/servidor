@@ -1,7 +1,7 @@
 <web-app>
     <servlet>
         <servlet-name>init-auth</servlet-name>
-        <servlet-class>ar.incluit.fintech.anses.servidor.web.servlet</servlet-class>
+        <servlet-class>ar.incluit.fintech.anses.servidor.web.servlet.InitAuth</servlet-class>
     </servlet>
 
     <servlet-mapping>
