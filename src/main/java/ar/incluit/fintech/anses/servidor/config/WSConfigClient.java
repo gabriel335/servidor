@@ -4,6 +4,9 @@ import ar.incluit.fintech.anses.servidor.service.SOAPConector;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.ws.config.annotation.WsConfigurerAdapter;
 import org.springframework.ws.server.EndpointInterceptor;
 
@@ -11,7 +14,8 @@ import java.util.List;
 
 
 @Configuration
-public class WSConfigClient {
+@EnableWebMvc
+public class WSConfigClient implements WebMvcConfigurer {
 
     @Bean
     public Jaxb2Marshaller marshaller() {
@@ -26,6 +30,12 @@ public class WSConfigClient {
         client.setMarshaller(marshaller);
         client.setUnmarshaller(marshaller);
         return client;
+    }
+
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**").allowedMethods("*").allowedOrigins("*");
     }
 
 }
