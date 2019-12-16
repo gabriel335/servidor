@@ -3,7 +3,6 @@ package ar.incluit.fintech.anses.servidor.service;
 import ar.incluit.fintech.anses.servidor.web.soap.Session;
 import ar.incluit.fintech.anses.servidor.web.soap.SessionStorage;
 import com.entrevistas.wsdl.*;
-import com.sun.xml.internal.messaging.saaj.soap.ver1_1.Message1_1Impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +15,7 @@ import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 import org.springframework.ws.soap.SoapHeader;
 import org.springframework.ws.soap.saaj.SaajSoapMessage;
 import org.springframework.xml.transform.StringSource;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.namespace.QName;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
