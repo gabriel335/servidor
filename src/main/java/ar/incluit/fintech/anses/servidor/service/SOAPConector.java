@@ -528,7 +528,7 @@ public class SOAPConector extends WebServiceGatewaySupport {
             SaajSoapMessage soapMessage = (SaajSoapMessage) message;
             SoapHeader soapHeader = soapMessage.getSoapHeader();
 
-            ((SaajSoapMessage) message).getSaajMessage().getMimeHeaders().setHeader("SOAPAction",String.format("entrevistasEndpoint/%s",request.getHeader("SOAPAction")));
+            ((SaajSoapMessage) message).getSaajMessage().getMimeHeaders().setHeader("SOAPAction",String.format("\"entrevistasEndpoint/%s\"",request.getHeader("SOAPAction")));
 
             String tks = String.format("<token %s >%s</token>",namespaceDirectorURL,session.getToken());
             String sgn = String.format("<sign %s >%s</sign>",namespaceDirectorURL,session.getSign());
