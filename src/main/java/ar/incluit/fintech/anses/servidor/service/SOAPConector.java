@@ -3,6 +3,7 @@ package ar.incluit.fintech.anses.servidor.service;
 import ar.incluit.fintech.anses.servidor.web.soap.Session;
 import ar.incluit.fintech.anses.servidor.web.soap.SessionStorage;
 import com.entrevistas.wsdl.*;
+import com.sun.xml.internal.messaging.saaj.soap.ver1_1.Message1_1Impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.ws.soap.saaj.SaajSoapMessage;
 import org.springframework.xml.transform.StringSource;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.namespace.QName;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -32,7 +34,7 @@ public class SOAPConector extends WebServiceGatewaySupport {
     @Value("${ws.url}")
     private String WSURL = "http://localhost:9090/ws/entrevistas.wsdl";
 
-    private String namespaceDirectorURL = "xmlns=http://director.anses.gov.ar";
+    private String namespaceDirectorURL = "xmlns=\"http://director.anses.gov.ar\"";
 
     @Autowired
     SessionStorage sessionStorage;
@@ -529,9 +531,16 @@ public class SOAPConector extends WebServiceGatewaySupport {
             SaajSoapMessage soapMessage = (SaajSoapMessage) message;
             SoapHeader soapHeader = soapMessage.getSoapHeader();
 
-            StringSource headerSource = new StringSource("<token " + namespaceDirectorURL + ">\"" + session.getToken()+ "\"</token>\n<sign " + namespaceDirectorURL + ">" + session.getSign() + "</sign>");
+            ((SaajSoapMessage) message).getSaajMessage().getMimeHeaders().setHeader("SOAPAction",request.getHeader("SOAPAction"));
+
+            String tks = String.format("<token %s >%s</token>",namespaceDirectorURL,session.getToken());
+            String sgn = String.format("<sign %s >%s</sign>",namespaceDirectorURL,session.getSign());
+
+            StringSource tokenSource = new StringSource(tks);
+            StringSource signSource = new StringSource(sgn);
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
-            transformer.transform(headerSource, soapHeader.getResult());
+            transformer.transform(tokenSource, soapHeader.getResult());
+            transformer.transform(signSource, soapHeader.getResult());
         } catch (TransformerFactoryConfigurationError | TransformerException e) {
             logger.error(e.getMessage(), e);
         }

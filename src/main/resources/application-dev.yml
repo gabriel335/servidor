@@ -4,4 +4,4 @@ server:
 backoffice:
   url: http://localhost:4200/#/auth/login/check
 ws:
-  url: http://localhost:9090/ws/entrevistas.wsdl
+  url: http://10.201.4.214:9090/ws/entrevistas.wsdl
