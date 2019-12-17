@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 
+        This XML file does not appear to have any style information associated with it. The document tree is shown below.
 <wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="entrevistasEndpoint" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="entrevistasEndpoint" targetNamespace="entrevistasEndpoint">
     <wsdl:types>
         <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="entrevistasEndpoint" elementFormDefault="qualified" targetNamespace="entrevistasEndpoint">
@@ -1023,7 +1024,7 @@
             </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="getAllQuestion">
-            <soap:operation soapAction="getAllQuestions"/>
+            <soap:operation soapAction="getAllQuestion"/>
             <wsdl:input name="getAllQuestionRequest">
                 <soap:body use="literal"/>
             </wsdl:input>
@@ -1050,7 +1051,7 @@
             </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="updateSignature">
-            <soap:operation soapAction="updateSignatureCurrentUser"/>
+            <soap:operation soapAction="updateSignature"/>
             <wsdl:input name="updateSignatureRequest">
                 <soap:body use="literal"/>
             </wsdl:input>
@@ -1059,7 +1060,7 @@
             </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="getAllQTy">
-            <soap:operation soapAction="getAllQuestionType"/>
+            <soap:operation soapAction="getAllQTy"/>
             <wsdl:input name="getAllQTyRequest">
                 <soap:body use="literal"/>
             </wsdl:input>
@@ -1086,7 +1087,7 @@
             </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="changeStatus">
-            <soap:operation soapAction="changeStatusQuestion"/>
+            <soap:operation soapAction="changeStatus"/>
             <wsdl:input name="changeStatusRequest">
                 <soap:body use="literal"/>
             </wsdl:input>
@@ -1113,7 +1114,7 @@
             </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="addQTy">
-            <soap:operation soapAction="addQuestionType"/>
+            <soap:operation soapAction="addQTy"/>
             <wsdl:input name="addQTyRequest">
                 <soap:body use="literal"/>
             </wsdl:input>
@@ -1131,7 +1132,7 @@
             </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="authenticate">
-            <soap:operation soapAction="authorizeUser"/>
+            <soap:operation soapAction="authenticate"/>
             <wsdl:input name="authenticateRequest">
                 <soap:body use="literal"/>
             </wsdl:input>
@@ -1158,7 +1159,7 @@
             </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="getUsersByType">
-            <soap:operation soapAction="getUsersForType"/>
+            <soap:operation soapAction="getUsersByType"/>
             <wsdl:input name="getUsersByTypeRequest">
                 <soap:body use="literal"/>
             </wsdl:input>
@@ -1212,7 +1213,7 @@
             </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="getRoles">
-            <soap:operation soapAction="getAllRoles"/>
+            <soap:operation soapAction="getRoles"/>
             <wsdl:input name="getRolesRequest">
                 <soap:body use="literal"/>
             </wsdl:input>
